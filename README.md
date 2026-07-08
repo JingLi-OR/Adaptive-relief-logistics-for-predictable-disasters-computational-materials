@@ -76,7 +76,6 @@ python scripts/fig11_total_cost_vs_crowdparams.py
 python scripts/figD1_TRC_vs_T_rho.py
 ```
 
-The scripts read the corresponding worksheets in `data/EJOR_Data for numerical analysis.xlsx` and generate the figures reported in the revised manuscript and Supplementary Material.
 
 ## Random instance generation
 
