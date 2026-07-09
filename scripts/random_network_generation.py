@@ -537,7 +537,7 @@ def plot_network(
     save_path: str | Path | None = None,
     show: bool = True,
 ) -> None:
-    """Plot node locations and trajectory line segments."""
+    """Plot node locations and trajectory line segments in miles."""
     import matplotlib.pyplot as plt
 
     regions: Dict[str, Region] = network["regions"]
@@ -556,10 +556,10 @@ def plot_network(
         "demand_point": "demand_points",
     }
 
-    plt.figure(figsize=(18, 12))
+    plt.figure(figsize=(12, 12))
 
     for region_key, (color, marker, label) in style.items():
-        vertices = np.asarray(regions[region_key].vertices)
+        vertices = np.asarray(regions[region_key].vertices) / MILE_TO_KM
         plt.plot(
             np.append(vertices[:, 0], vertices[0, 0]),
             np.append(vertices[:, 1], vertices[0, 1]),
@@ -567,7 +567,7 @@ def plot_network(
             label=f"{label} region",
         )
 
-        points = network[point_keys[region_key]]
+        points = network[point_keys[region_key]] / MILE_TO_KM
         plt.scatter(
             points[:, 0],
             points[:, 1],
@@ -580,23 +580,26 @@ def plot_network(
     trajectories = network["trajectories"]
     for row in trajectories.itertuples(index=False):
         plt.plot(
-            [row.landing_x, row.departing_x],
-            [row.landing_y, row.departing_y],
+            [row.landing_x / MILE_TO_KM, row.departing_x / MILE_TO_KM],
+            [row.landing_y / MILE_TO_KM, row.departing_y / MILE_TO_KM],
             color="gray",
             linestyle="--",
             linewidth=0.5,
         )
 
+    landing_points = network["landing_points"] / MILE_TO_KM
+    departing_points = network["departing_points"] / MILE_TO_KM
+
     plt.scatter(
-        network["landing_points"][:, 0],
-        network["landing_points"][:, 1],
+        landing_points[:, 0],
+        landing_points[:, 1],
         color="cyan",
         marker="<",
         label="Landing points",
     )
     plt.scatter(
-        network["departing_points"][:, 0],
-        network["departing_points"][:, 1],
+        departing_points[:, 0],
+        departing_points[:, 1],
         color="magenta",
         marker=">",
         label="Departing points",
@@ -607,8 +610,13 @@ def plot_network(
         f"Synthetic relief logistics network "
         f"(seed={config.seed}, |S|={network['n_disaster_scenarios']})"
     )
-    plt.xlabel("x-coordinate (km)")
-    plt.ylabel("y-coordinate (km)")
+    plt.xlabel("x-coordinate (miles)")
+    plt.ylabel("y-coordinate (miles)")
+
+    plt.xlim(0, 500)
+    plt.ylim(0, 500)
+    plt.gca().set_aspect("equal", adjustable="box")
+
     plt.grid(True)
     plt.legend()
     plt.tight_layout()
