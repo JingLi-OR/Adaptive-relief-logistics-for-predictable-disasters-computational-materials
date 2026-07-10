@@ -67,13 +67,15 @@ pip install pandas openpyxl numpy matplotlib shapely
 The scripts in the `scripts/` folder can be used to reproduce the main numerical figures from the provided Excel workbook.
 
 ```bash
-python scripts/fig6_trc_vs_T_rho.py
-python scripts/fig7_cost_components_vs_T_rho6.py
-python scripts/fig8_relative_cost_increase_vs_T.py
-python scripts/fig9_heatmaps_cost_vs_omega_psi.py
-python scripts/fig10_Tstar_vs_crowdparams.py
-python scripts/fig11_total_cost_vs_crowdparams.py
-python scripts/figD1_TRC_vs_T_rho.py
+cd scripts
+
+python fig6_trc_vs_T_rho.py
+python fig7_cost_components_vs_T_rho6.py
+python fig8_relative_cost_increase_vs_T.py
+python fig9_heatmaps_cost_vs_omega_psi.py
+python fig10_Tstar_vs_crowdparams.py
+python fig11_total_cost_vs_crowdparams.py
+python figD1_TRC_vs_T_rho.py
 ```
 
 
